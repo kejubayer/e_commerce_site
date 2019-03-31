@@ -1,5 +1,7 @@
 <?php $title = 'Home'; ?>
-<?php require_once 'partials/_header.php'; ?>
+<?php require_once 'partials/_header.php';
+?>
+
 <?php
 $query = 'SELECT id, name, slug, image, price FROM products';
 $stmt = $connection->query($query);
@@ -28,11 +30,15 @@ $products = $stmt->fetchAll();
                             <p class="card-text"><?php echo $product['name']; ?></p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">
-                                        Add to Cart
-                                    </button>
+                                    <form action="cart.php" method="post">
+                                        <input type="hidden" name="id" value="<?php echo $product['id']; ?>" >
+                                        <button type="submit" class="btn btn-success btn-block" name="add">
+                                            Add to Cart
+                                        </button>
+                                    </form>
+
                                 </div>
-                                <small class="text-muted">BDT <?php echo $product['price']; ?></small>
+                                <span class="text-muted">BDT <?php echo $product['price']; ?></span>
                             </div>
                         </div>
                     </div>

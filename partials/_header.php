@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'database/connection.php';
+
 ?>
 
 
@@ -36,7 +37,7 @@ require_once 'database/connection.php';
 
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
-            <a href="/project/e_commerce_site/" class="navbar-brand d-flex align-items-center">
+            <a href="/e_commerce_site/" class="navbar-brand d-flex align-items-center">
                 <strong>PPI Ecommerce</strong>
             </a>
 
