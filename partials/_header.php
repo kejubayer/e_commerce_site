@@ -1,10 +1,3 @@
-<?php
-session_start();
-require_once 'database/connection.php';
-
-?>
-
-
 <!doctype html>
 <html lang="en">
 <head>

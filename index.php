@@ -1,13 +1,13 @@
-<?php $title = 'Home'; ?>
-<?php require_once 'partials/_header.php';
-?>
-
 <?php
+$title = 'Home';
+session_start();
+require_once 'database/connection.php';
 $query = 'SELECT id, name, slug, image, price FROM products';
 $stmt = $connection->query($query);
 $stmt->execute();
 
 $products = $stmt->fetchAll();
+require_once 'partials/_header.php';
 ?>
 
 <main role="main">

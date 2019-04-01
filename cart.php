@@ -1,13 +1,37 @@
-<?php $title = 'Cart'; ?>
-<?php require_once 'partials/_header.php'; ?>
 <?php
+$title = 'Cart';
+session_start();
+require_once 'database/connection.php';
 if (isset($_POST['clear'])){
     unset($_SESSION['cart']);
+    header('Location: cart.php');
+    exit();
 }
 if (isset($_POST['delete'])){
     $key = (string)$_POST['id'];
     unset($_SESSION['cart'][$key]);
+    header('Location: cart.php');
+    exit();
 }
+if (isset($_POST['decrease'])){
+    $key = (string)$_POST['id'];
+    if (array_key_exists($key,$_SESSION['cart'])){
+        $query = 'SELECT price FROM products WHERE id=:id';
+        $stmt = $connection ->prepare($query);
+        $stmt->bindParam(':id',$key, PDO::PARAM_INT);
+        $stmt->execute();
+        $product = $stmt->fetch();
+        if ($_SESSION['cart'][$key]['quantity'] > 1){
+            $_SESSION['cart'][$key]['quantity']--;
+            $_SESSION['cart'][$key]['total_price'] -= $product['price'];
+            $_SESSION['cart'][$key]['total_price'] = (float)$_SESSION['cart'][$key]['total_price'];
+        }
+    }
+    header('Location: cart.php');
+    exit();
+
+}
+
 $cart =$_SESSION['cart'] ?? [];
 
 if (isset($_POST['add'])){
@@ -34,6 +58,8 @@ if (isset($_POST['add'])){
         }
 
         $_SESSION['cart']=$cart;
+        header('Location: cart.php');
+        exit();
 
     }catch (Exception $e){
         die($e->getMessage());
@@ -41,6 +67,9 @@ if (isset($_POST['add'])){
 }
 
 $total_price = !empty($cart) ? array_sum(array_column($cart,'total_price')) : 0;
+
+require_once 'partials/_header.php';
+
 ?>
 
 <main role="main">
@@ -50,6 +79,11 @@ $total_price = !empty($cart) ? array_sum(array_column($cart,'total_price')) : 0;
         <hr>
 
         <div class="row">
+            <?php if (empty($cart)): ?>
+            <div class="alert alert-warning">
+                Please add some products first .
+            </div>
+            <?php else: ?>
             <table class="table table-hover table-bordered">
                 <thead>
                 <tr>
@@ -76,6 +110,12 @@ $total_price = !empty($cart) ? array_sum(array_column($cart,'total_price')) : 0;
                                 [X]
                             </button>
                         </form>
+                        <form action="cart.php" method="post">
+                            <input type="hidden" name="id" value="<?php echo $key; ?>">
+                            <button type="submit" name="decrease" class="btn btn-sm btn-danger" >
+                                [-]
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 <? endforeach; ?>
@@ -98,6 +138,7 @@ $total_price = !empty($cart) ? array_sum(array_column($cart,'total_price')) : 0;
 
                 </tbody>
             </table>
+            <?php endif;?>
         </div>
 
     </div>
