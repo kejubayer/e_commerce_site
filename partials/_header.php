@@ -21,7 +21,8 @@
                 <div class="col-sm-4 offset-md-1 py-4">
                     <h4 class="text-white">Menu</h4>
                     <ul class="list-unstyled">
-                        <li><a href="./category.php" class="text-white">Categories</a></li>
+                        <li><a href="register.php" class="text-white">Register</a></li>
+                        <li><a href="login.php" class="text-white">Login</a></li>
                     </ul>
                 </div>
             </div>

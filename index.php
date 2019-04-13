@@ -9,7 +9,6 @@ $stmt->execute();
 $products = $stmt->fetchAll();
 require_once 'partials/_header.php';
 ?>
-
 <main role="main">
 
     <section class="jumbotron text-center">
